@@ -36,6 +36,7 @@ class BarberController extends Controller
         'start_time'        => 'required',
         'end_time'          => 'required',
         'photo'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        'working_days'      => 'nullable|array', // Добавьте валидацию
     ]);
 
     // Создаём пользователя
@@ -55,9 +56,10 @@ class BarberController extends Controller
         'specialization'         => $request->specialization,
         'experience_years'       => $request->experience_years,
         'description'            => $request->description,
+        'working_days'           => $request->working_days ?? [], // 👈 ВОТ ЭТО ДОБАВИТЬ
         'start_time'             => $request->start_time,
         'end_time'               => $request->end_time,
-        'slot_duration_minutes'  => 30, // фиксированное значение, не влияет на длительность услуги
+        'slot_duration_minutes'  => 30,
         'is_active'              => true,
     ]);
 
@@ -84,7 +86,7 @@ class BarberController extends Controller
 
     public function update(Request $request, Barber $barber)
 {
-    $request->validate([
+     $request->validate([
         'name'              => 'required|string|max:255',
         'email'             => 'required|email|unique:users,email,' . $barber->user_id,
         'phone'             => 'nullable|string|max:20|unique:users,phone,' . $barber->user_id,
@@ -96,6 +98,7 @@ class BarberController extends Controller
         'end_time'          => 'required',
         'is_active'         => 'boolean',
         'photo'             => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+        'working_days'      => 'nullable|array', // 👈 ДОБАВИТЬ
     ]);
 
     $barber->user->update([
@@ -109,6 +112,7 @@ class BarberController extends Controller
         'specialization'         => $request->specialization,
         'experience_years'       => $request->experience_years,
         'description'            => $request->description,
+        'working_days'           => $request->working_days ?? [], // 👈 ВОТ ЭТО ДОБАВИТЬ
         'start_time'             => $request->start_time,
         'end_time'               => $request->end_time,
         'is_active'              => $request->boolean('is_active'),
