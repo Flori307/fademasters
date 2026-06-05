@@ -59,7 +59,7 @@ class BarberController extends Controller
         'working_days'           => $request->working_days ?? [], // 👈 ВОТ ЭТО ДОБАВИТЬ
         'start_time'             => $request->start_time,
         'end_time'               => $request->end_time,
-        'slot_duration_minutes'  => 30,
+        // 'slot_duration_minutes'  => 30,
         'is_active'              => true,
     ]);
 
@@ -86,7 +86,7 @@ class BarberController extends Controller
 
     public function update(Request $request, Barber $barber)
 {
-     $request->validate([
+    $request->validate([
         'name'              => 'required|string|max:255',
         'email'             => 'required|email|unique:users,email,' . $barber->user_id,
         'phone'             => 'nullable|string|max:20|unique:users,phone,' . $barber->user_id,
